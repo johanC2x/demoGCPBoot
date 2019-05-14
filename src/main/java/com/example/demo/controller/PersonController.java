@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entity.Person;
 import com.example.demo.repository.PersonRepository;
 import com.example.demo.util.Response;
-import com.ysu.facturacion.api.controller.PostApiController;
 
 @CrossOrigin
 @RestController
