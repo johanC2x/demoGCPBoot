@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import java.util.Collection;
 import java.util.Optional;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,12 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entity.Person;
 import com.example.demo.repository.PersonRepository;
 import com.example.demo.util.Response;
+import com.ysu.facturacion.api.controller.PostApiController;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/people")
 public class PersonController {
 
+	private static final Log logger = LogFactory.getLog(PersonController.class);
+	
 	@Autowired
 	private PersonRepository personRepo;
 
@@ -32,17 +37,21 @@ public class PersonController {
 	private Response response;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<Collection<Person>> getPeople() {
+	public ResponseEntity<Collection<Person>> getPeople() throws Exception {
+		logger.info("==================== METHOD => [ getPeople ] ============================");
 		return new ResponseEntity<>(personRepo.findAll(), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getPerson(@PathVariable long id) {
+		logger.info("==================== METHOD => [ getPerson ] ============================");
+		logger.info("ID INGRESAOD => [" + id + "]");
 		if (personRepo.existsById(id)) {
 			response.setCode(HttpStatus.OK.toString());
 			response.setData(personRepo.findById(id));
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} else {
+			logger.info("El id ingresado no le pertenece a ningun registro");
 			response.setCode(HttpStatus.NOT_FOUND.toString());
 			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
