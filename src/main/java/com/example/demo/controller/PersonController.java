@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,11 +36,9 @@ public class PersonController {
 		return new ResponseEntity<>(personRepo.findAll(), HttpStatus.OK);
 	}
 
-	/*
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Response> getPerson(@PathVariable long id) {
-		Person person = personRepo.findById(id);
-		if (person != null) {
+		if (personRepo.existsById(id)) {
 			response.setCode(HttpStatus.OK.toString());
 			response.setData(personRepo.findById(id));
 			return new ResponseEntity<>(response, HttpStatus.OK);
@@ -48,7 +47,6 @@ public class PersonController {
 			return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 		}
 	}
-	*/
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Response> addPerson(@RequestBody Person person) {
